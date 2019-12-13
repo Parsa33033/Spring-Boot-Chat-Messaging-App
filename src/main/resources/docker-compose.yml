@@ -1,0 +1,36 @@
+version: '3'
+services:
+  rabbitmq:
+    image: "rabbitmq:management"
+    container_name: "rabbit"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  redis:
+    image: "redis:5-alpine"
+    container_name: "redis"
+    ports:
+      - "6379:6379"
+  cassandra:
+    image: "cassandra:3"
+    container_name: "cassandra"
+    ports:
+      - "9042:9042"
+  db:
+    image: "mysql:5"
+    container_name: "mysql"
+    environment:
+      MYSQL_DATABASE: "[change this to what DB you want]"
+      MYSQL_USER: "[change this to what USER you want]"
+      MYSQL_PASSWORD: "[change this to what PASSWORD you want]"
+      MYSQL_ROOT_PASSWORD: "[change this to what ROOT PASSWORD you want]"
+    ports:
+      - "3306:3306"
+    restart: always
+    expose:
+      - "3306"
+    volumes:
+      - my-db:/var/lib/mysql
+ 
+volumes:
+  my-db:

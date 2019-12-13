@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+Welcome <h2 th:text="${username}" th:value="${username}"></h2>
+users:
+<select id="select" >
+	<option th:each="username: ${users}" th:value="${username}" th:text="${username}"></option>
+</select>
+<p th:text="${online_users}"></p>
+<p id="pbox"></p>
+<form method="get" action="/disconnect">
+	<button type="submit" id="disconn">disconnect</button>
+</form>
+<table id="msgtable">
+</table>
+<textarea id="text" rows="4px" cols="10px"></textarea>
+<button id="send">Send</button>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript">
+console.log('[[${username}]]')
+var username = '[[${username}]]';
+console.log(username)
+var mysockjs = new SockJS("/stomp");
+var mystomp = Stomp.over(mysockjs);
+mystomp.connect({}, onConnect, onError);
+
+function onConnect(){
+	mystomp.subscribe("/topic/"+username+"/reply", onMessageReceived);
+	console.log(username+" is username --------")
+	mystomp.send("/app/chat.subscribe",{}, username);
+}
+
+function onMessageReceived(payload){
+	msg = JSON.parse(payload.body)
+	markup = "<tr><th>"+msg.sender +": "+ msg.content +"</th></tr>";
+	$("#msgtable").append(markup)
+}
+
+function onError(){
+	console.log("error");
+}
+
+$("#send").on("click", function(){
+	receiver = $("#select").val();
+	console.log("-------->"+receiver)
+	t = $("#text").val();
+	mystomp.send("/app/chat.message",{}, JSON.stringify({sender:username, receiver:receiver, content: t}));
+})
+	
+
+</script>
+</html>
