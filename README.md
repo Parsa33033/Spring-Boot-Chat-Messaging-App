@@ -20,7 +20,9 @@ The docker-compose.yml file in ' src/main/resources ' contains:
 * MySQL
 
 by running the command:
+
 '''
 [Spring-Boot-Chat-Messaging-App folder]/src/main/resources> Docker-compose up
 '''
+
 you can install all the services mentioned
