@@ -12,7 +12,8 @@ A chat messaging app with Spring boot, RabbitMQ, Apache Cassandra, Redis, MySQL,
 after installing the services mentioned, set username and password for MySQL and RabbitMQ and configure the passwords in application.properties file in spring boot.
 
 2) Install Docker
-The docker-compose.yml file in ''' src/main/resources ''' contains:
+
+The docker-compose.yml file in ' src/main/resources ' contains:
 * RabbitMQ
 * Apache Cassandra 
 * Redis
